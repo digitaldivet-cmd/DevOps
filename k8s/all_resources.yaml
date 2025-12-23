@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audit-service
+  template:
+    metadata:
+      labels:
+        app: audit-service
+    spec:
+      containers:
+      - name: audit-service
+        image: REPLACE_WITH_ACR_NAME.azurecr.io/audit-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_HTTP_PORTS
+          value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: audit-service
+spec:
+  selector:
+    app: audit-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-entry-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-entry-api
+  template:
+    metadata:
+      labels:
+        app: data-entry-api
+    spec:
+      containers:
+      - name: data-entry-api
+        image: REPLACE_WITH_ACR_NAME.azurecr.io/data-entry-api:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_HTTP_PORTS
+          value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-entry-api
+spec:
+  selector:
+    app: data-entry-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: audit-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: audit-frontend
+  template:
+    metadata:
+      labels:
+        app: audit-frontend
+    spec:
+      containers:
+      - name: audit-frontend
+        image: REPLACE_WITH_ACR_NAME.azurecr.io/audit-frontend:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: audit-frontend
+spec:
+  type: LoadBalancer
+  selector:
+    app: audit-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
