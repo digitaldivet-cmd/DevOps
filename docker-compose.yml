@@ -1,0 +1,33 @@
+services:
+  audit-service:
+    build: 
+      context: ./AuditService/AuditService
+      dockerfile: Dockerfile
+    container_name: audit-service
+    ports:
+      - "5196:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+
+  data-entry-api:
+    build:
+      context: ./DataEntryApi/DataEntryApi
+      dockerfile: Dockerfile
+    container_name: data-entry-api
+    ports:
+      - "5195:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+
+  frontend:
+    build:
+      context: ./AuditService/audit-frontend
+      dockerfile: Dockerfile
+    container_name: audit-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - audit-service
+      - data-entry-api

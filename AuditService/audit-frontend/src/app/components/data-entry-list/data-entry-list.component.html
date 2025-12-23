@@ -1,0 +1,55 @@
+<div class="list-container">
+    <div class="header">
+        <div class="header-content">
+            <h2>Data Entries</h2>
+            <p class="subtitle">System records overview</p>
+        </div>
+        <button class="refresh-btn" (click)="refresh()" [disabled]="isLoading">
+            <span class="btn-icon">{{ isLoading ? '⏳' : '↻' }}</span>
+            <span class="btn-text">{{ isLoading ? 'Loading...' : 'Refresh' }}</span>
+        </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+        <span class="alert-icon">⚠</span>
+        <span>{{ errorMessage }}</span>
+    </div>
+
+    <div *ngIf="isLoading && entries.length === 0" class="loading">
+        <div class="spinner"></div>
+        <p>Loading data entries...</p>
+    </div>
+
+    <div *ngIf="!isLoading && entries.length === 0 && !errorMessage" class="empty-state">
+        <div class="empty-icon">📁</div>
+        <h3>No Entries Yet</h3>
+        <p>Create your first data entry using the form above.</p>
+    </div>
+
+    <div *ngIf="entries.length > 0" class="logs-grid">
+        <div *ngFor="let entry of entries; let i = index" class="log-card" [style.animation-delay.ms]="i * 50">
+            <div class="card-header">
+                <span class="badge badge-action">{{ entry.name }}</span>
+                <span class="log-id">#{{ entry.id }}</span>
+            </div>
+
+            <div class="card-body">
+                <div class="info-row">
+                    <span class="label">Created At</span>
+                    <span class="value timestamp">{{ formatDate(entry.createdAtUtc) }}</span>
+                </div>
+                <div *ngIf="entry.description" class="details-section">
+                    <span class="label">Description</span>
+                    <p class="details-text">{{ entry.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="entries.length > 0" class="footer">
+        <div class="stats">
+            <span class="stats-icon">📊</span>
+            <span>Total Entries: <strong>{{ entries.length }}</strong></span>
+        </div>
+    </div>
+</div>

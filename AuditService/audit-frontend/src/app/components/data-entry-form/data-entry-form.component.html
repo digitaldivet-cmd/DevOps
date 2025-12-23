@@ -1,0 +1,35 @@
+<div class="form-container">
+    <h2>Create Data Entry</h2>
+    <p class="form-subtitle">Add new records to the system</p>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+        <span class="alert-icon">✓</span>
+        <span>{{ successMessage }}</span>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+        <span class="alert-icon">✗</span>
+        <span>{{ errorMessage }}</span>
+    </div>
+
+    <form [formGroup]="entryForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="name">Name *</label>
+            <input type="text" id="name" formControlName="name" placeholder="e.g., Project Alpha"
+                [class.error]="entryForm.get('name')?.touched && entryForm.get('name')?.invalid">
+            <span class="error-message" *ngIf="getFieldError('name')">
+                {{ getFieldError('name') }}
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" placeholder="Brief description of the entry"
+                rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Creating...' : 'Create Entry' }}
+        </button>
+    </form>
+</div>

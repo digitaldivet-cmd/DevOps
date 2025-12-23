@@ -1,0 +1,21 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>DevOps Dashboard</h1>
+    <p>Manage system records and audit logs</p>
+  </header>
+
+  <nav class="main-nav">
+    <a routerLink="/audit" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">🔒</span>
+      <span class="nav-text">Audit Service</span>
+    </a>
+    <a routerLink="/data-entry" routerLinkActive="active" class="nav-item">
+      <span class="nav-icon">📁</span>
+      <span class="nav-text">Data Entry</span>
+    </a>
+  </nav>
+
+  <main class="content-wrapper">
+    <router-outlet></router-outlet>
+  </main>
+</div>

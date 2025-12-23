@@ -1,0 +1,67 @@
+<div class="list-container">
+    <div class="header">
+        <div class="header-content">
+            <h2>Audit Logs</h2>
+            <p class="subtitle">Real-time activity monitoring</p>
+        </div>
+        <button class="refresh-btn" (click)="refresh()" [disabled]="isLoading">
+            <span class="btn-icon">{{ isLoading ? '⏳' : '🔄' }}</span>
+            <span class="btn-text">{{ isLoading ? 'Loading...' : 'Refresh' }}</span>
+        </button>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+        <span class="alert-icon">⚠</span>
+        <span>{{ errorMessage }}</span>
+    </div>
+
+    <div *ngIf="isLoading && logs.length === 0" class="loading">
+        <div class="spinner"></div>
+        <p>Loading audit logs...</p>
+    </div>
+
+    <div *ngIf="!isLoading && logs.length === 0 && !errorMessage" class="empty-state">
+        <div class="empty-icon">📋</div>
+        <h3>No Audit Logs Yet</h3>
+        <p>Create your first audit log using the form above.</p>
+    </div>
+
+    <div *ngIf="logs.length > 0" class="logs-grid">
+        <div *ngFor="let log of logs; let i = index" class="log-card" [style.animation-delay.ms]="i * 50">
+            <div class="card-header">
+                <span class="badge badge-action">{{ log.action }}</span>
+                <span class="log-id">#{{ log.id }}</span>
+            </div>
+
+            <div class="card-body">
+                <div class="info-row">
+                    <span class="label">Entity Type</span>
+                    <span class="value">{{ log.entityType }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Entity ID</span>
+                    <span class="value">{{ log.entityId }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">User ID</span>
+                    <span class="value user-value">{{ log.userId }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Timestamp</span>
+                    <span class="value timestamp">{{ formatDate(log.timestamp) }}</span>
+                </div>
+                <div *ngIf="log.details" class="details-section">
+                    <span class="label">Details</span>
+                    <p class="details-text">{{ log.details }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="logs.length > 0" class="footer">
+        <div class="stats">
+            <span class="stats-icon">📊</span>
+            <span>Total Logs: <strong>{{ logs.length }}</strong></span>
+        </div>
+    </div>
+</div>

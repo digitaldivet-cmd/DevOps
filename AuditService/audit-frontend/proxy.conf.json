@@ -1,0 +1,14 @@
+{
+    "/api/auditlogs": {
+        "target": "http://127.0.0.1:5196",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/api/dataentries": {
+        "target": "http://127.0.0.1:5195",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}
