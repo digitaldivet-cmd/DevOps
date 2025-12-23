@@ -25,17 +25,19 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Get ACR Token
+      id: acr-token
+      run: |
+        token=$(az acr login --name $(echo ${{ env.ACR_LOGIN_SERVER }} | cut -d'.' -f1) --expose-token --output tsv --query accessToken)
+        echo "::add-mask::$token"
+        echo "token=$token" >> $GITHUB_OUTPUT
+
     - name: Login to ACR
       uses: docker/login-action@v2
       with:
         registry: ${{ env.ACR_LOGIN_SERVER }}
-        username: ${{ secrets.ACR_USERNAME }} # Optional if using managed identity, but simpler to use az acr login logic via script
-        password: ${{ secrets.ACR_PASSWORD }} # logic below makes this easier
-    
-    # Alternative: Authenticate Docker using Azure CLI
-    - name: Login to ACR via Azure CLI
-      run: |
-        az acr login --name $(echo ${{ env.ACR_LOGIN_SERVER }} | cut -d'.' -f1)
+        username: 00000000-0000-0000-0000-000000000000
+        password: ${{ steps.acr-token.outputs.token }}
 
     - name: Build and Push Audit Service
       uses: docker/build-push-action@v4
