@@ -5,7 +5,7 @@ $ErrorActionPreference = "Stop"
 
 # Configuration
 $ResourceGroup = "DevOpsProjectRG"
-$Location = "eastus"
+$Location = "centralus"
 $AcrName = "devopsacr" + (Get-Random -Minimum 1000 -Maximum 9999)
 $GitHubRepoName = "devops-microservices" # Optional context
 
@@ -20,9 +20,9 @@ if ($LASTEXITCODE -ne 0) { Write-Error "Login failed"; exit }
 $SubscriptionId = az account show --query id --output tsv
 Write-Host "✅ Using Subscription: $SubscriptionId" -ForegroundColor Green
 
-# 3. Create Resource Group (Idempotent)
+# 3. Create Resource Group (Idempotent - using eastus to match existing)
 Write-Host "2️⃣ Checking Resource Group..." -ForegroundColor Yellow
-az group create --name $ResourceGroup --location $Location --output none
+az group create --name $ResourceGroup --location eastus --output none
 
 # 4. Create ACR (Idempotent)
 Write-Host "3️⃣ Checking Container Registry..." -ForegroundColor Yellow

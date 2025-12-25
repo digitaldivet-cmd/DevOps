@@ -1,0 +1,19 @@
+# Visual Studio
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Node
+node_modules/
+dist/
+.angular/
+
+# Kubernetes
+k8s/deploy_generated.yaml
+
+# PowerShell
+*.log

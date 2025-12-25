@@ -29,8 +29,13 @@ spec:
   selector:
     app: audit-service
   ports:
-  - protocol: TCP
+  - name: http
+    protocol: TCP
     port: 80
+    targetPort: 8080
+  - name: port8080
+    protocol: TCP
+    port: 8080
     targetPort: 8080
 ---
 apiVersion: apps/v1
@@ -64,8 +69,13 @@ spec:
   selector:
     app: data-entry-api
   ports:
-  - protocol: TCP
+  - name: http
+    protocol: TCP
     port: 80
+    targetPort: 8080
+  - name: port8080
+    protocol: TCP
+    port: 8080
     targetPort: 8080
 ---
 apiVersion: apps/v1

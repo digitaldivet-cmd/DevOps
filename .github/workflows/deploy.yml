@@ -42,16 +42,16 @@ jobs:
     - name: Build and Push Audit Service
       uses: docker/build-push-action@v4
       with:
-        context: ./AuditService/AuditService
-        file: ./AuditService/AuditService/Dockerfile
+        context: ./Backend/AuditService/AuditService
+        file: ./Backend/AuditService/AuditService/Dockerfile
         push: true
         tags: ${{ env.ACR_LOGIN_SERVER }}/audit-service:latest
 
     - name: Build and Push Data Entry API
       uses: docker/build-push-action@v4
       with:
-        context: ./DataEntryApi/DataEntryApi
-        file: ./DataEntryApi/DataEntryApi/Dockerfile
+        context: ./Backend/DataEntryApi/DataEntryApi
+        file: ./Backend/DataEntryApi/DataEntryApi/Dockerfile
         push: true
         tags: ${{ env.ACR_LOGIN_SERVER }}/data-entry-api:latest
 
