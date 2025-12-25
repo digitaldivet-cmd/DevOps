@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
 
 env:
-  # UPDATE THIS with your ACR Login Server (e.g., devopsacr1234.azurecr.io)
-  # You can get this by running the setup script!
   ACR_LOGIN_SERVER: devopsacr4066.azurecr.io
+  AKS_CLUSTER_NAME: devops-cluster
+  RESOURCE_GROUP: DevOpsProjectRG
 
 jobs:
   build-and-push:
@@ -62,3 +62,17 @@ jobs:
         file: ./AuditService/audit-frontend/Dockerfile
         push: true
         tags: ${{ env.ACR_LOGIN_SERVER }}/audit-frontend:latest
+
+    - name: Set AKS Context
+      uses: azure/aks-set-context@v3
+      with:
+        resource-group: ${{ env.RESOURCE_GROUP }}
+        cluster-name: ${{ env.AKS_CLUSTER_NAME }}
+
+    - name: Deploy to AKS
+      run: |
+        # Replace ACR placeholder in manifest
+        sed -i "s/REPLACE_WITH_ACR_NAME.azurecr.io/${{ env.ACR_LOGIN_SERVER }}/g" k8s/all_resources.yaml
+        
+        # Apply manifestations
+        kubectl apply -f k8s/all_resources.yaml
